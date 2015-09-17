@@ -23,8 +23,6 @@ class SpringAnimationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -36,8 +34,10 @@ class SpringAnimationViewController: UIViewController {
     @IBAction func springAnimationFetched(sender: UIButton) {
         var menuView = UIView(frame: CGRectMake(0, 100, 320, 60))
         menuView.backgroundColor = UIColor(red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 1.0)
-        springView = MKFluidView(frame: CGRectMake(0, 100, 320, 60))
+        
+        springView = MKFluidView(frame: CGRectMake(150, viewAtBackOfMessagingText.frame.origin.y - 30, 150, 30))
         self.view.addSubview(springView!)
+        springView?.curveType = .EggShape
         
         springView?.animate(true, callback: { () -> Void in
             self.springView?.removeFromSuperview()
