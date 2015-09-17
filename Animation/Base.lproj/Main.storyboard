@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6AQ-GB-oiJ">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Animation" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iq3-2V-dpw">
+                                <rect key="frame" x="275" y="131" width="50" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="7Du-Ws-3fK"/>
+                                    <constraint firstAttribute="width" constant="50" id="qLm-pu-AQr"/>
+                                </constraints>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kqo-v9-RTN">
+                                <rect key="frame" x="275" y="196" width="50" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Sn4-1J-Kao"/>
+                                    <constraint firstAttribute="width" constant="50" id="cun-ww-tcB"/>
+                                </constraints>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5pW-as-q92">
+                                <rect key="frame" x="275" y="68" width="50" height="50"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="OtI-r1-uer"/>
+                                    <constraint firstAttribute="width" constant="50" id="ao5-1b-fGX"/>
+                                </constraints>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Kqo-v9-RTN" firstAttribute="top" secondItem="Iq3-2V-dpw" secondAttribute="bottom" constant="15" id="5GT-FZ-1Bt"/>
+                            <constraint firstAttribute="centerX" secondItem="Iq3-2V-dpw" secondAttribute="centerX" id="7SN-Gi-cNv"/>
+                            <constraint firstAttribute="centerX" secondItem="Kqo-v9-RTN" secondAttribute="centerX" id="Uwz-ak-6Tr"/>
+                            <constraint firstAttribute="centerX" secondItem="5pW-as-q92" secondAttribute="centerX" id="Wc5-Ed-uRe"/>
+                            <constraint firstItem="Iq3-2V-dpw" firstAttribute="top" secondItem="5pW-as-q92" secondAttribute="bottom" constant="13" id="jq6-1H-3RP"/>
+                            <constraint firstItem="5pW-as-q92" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="48" id="xiP-uK-p6B"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="shapeButton" destination="5pW-as-q92" id="k1O-KQ-c3S"/>
+                        <outlet property="shapeButton2" destination="Iq3-2V-dpw" id="779-7O-bVK"/>
+                        <outlet property="shapeButton3" destination="Kqo-v9-RTN" id="ksZ-Jx-3bK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+        <!--Line Animation View Controller-->
+        <scene sceneID="i3r-6l-AUm">
+            <objects>
+                <viewController id="tsM-X9-pTB" customClass="LineAnimationViewController" customModule="Animation" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ibc-nK-sNh"/>
+                        <viewControllerLayoutGuide type="bottom" id="pis-0V-jVJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PWN-9B-V1d">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IXb-6A-qy6">
+                                <rect key="frame" x="282" y="329" width="46" height="30"/>
+                                <state key="normal" title="Toggle">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleButtonClicked:" destination="tsM-X9-pTB" eventType="touchUpInside" id="tUL-uu-hFv"/>
+                                </connections>
+                            </button>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="qGI-zN-tDY">
+                                <rect key="frame" x="0.0" y="438" width="600" height="162"/>
+                                <date key="date" timeIntervalSinceReferenceDate="463994885.07350498">
+                                    <!--2015-09-15 07:28:05 +0000-->
+                                </date>
+                            </datePicker>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="IXb-6A-qy6" secondAttribute="centerX" id="3Dy-In-ioa"/>
+                            <constraint firstAttribute="centerY" secondItem="IXb-6A-qy6" secondAttribute="centerY" id="FiO-LS-c8S"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="qGI-zN-tDY"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sx9-XV-MKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1063" y="321"/>
+        </scene>
+        <!--Spring Animation View Controller-->
+        <scene sceneID="Rwm-9x-WKM">
+            <objects>
+                <viewController id="6AQ-GB-oiJ" customClass="SpringAnimationViewController" customModule="Animation" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6o5-uv-IFZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="vDS-J0-XyZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PKU-tm-XHP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVA-sT-SCM">
+                                <rect key="frame" x="241" y="285" width="118" height="30"/>
+                                <state key="normal" title="Spring Animation">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="springAnimationFetched:" destination="6AQ-GB-oiJ" eventType="touchUpInside" id="klv-2b-VBA"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SVD-eR-kJW">
+                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vun-qf-Ny5">
+                                        <rect key="frame" x="10" y="8" width="580" height="44"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="vun-qf-Ny5" secondAttribute="bottom" constant="8" id="E0x-SW-BkM"/>
+                                    <constraint firstAttribute="trailing" secondItem="vun-qf-Ny5" secondAttribute="trailing" constant="10" id="YB2-DP-JwA"/>
+                                    <constraint firstAttribute="height" constant="60" id="ko0-fw-cc8"/>
+                                    <constraint firstItem="vun-qf-Ny5" firstAttribute="leading" secondItem="SVD-eR-kJW" secondAttribute="leading" constant="10" id="uKh-VG-jtt"/>
+                                    <constraint firstItem="vun-qf-Ny5" firstAttribute="top" secondItem="SVD-eR-kJW" secondAttribute="top" constant="8" id="yLj-8V-xrd"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="UVA-sT-SCM" secondAttribute="centerY" id="73g-pt-IJQ"/>
+                            <constraint firstAttribute="centerX" secondItem="UVA-sT-SCM" secondAttribute="centerX" id="D3X-eB-0Xv"/>
+                            <constraint firstAttribute="trailing" secondItem="SVD-eR-kJW" secondAttribute="trailing" id="VkV-YD-VJN"/>
+                            <constraint firstItem="SVD-eR-kJW" firstAttribute="leading" secondItem="PKU-tm-XHP" secondAttribute="leading" id="YYQ-2D-hTd"/>
+                            <constraint firstAttribute="bottom" secondItem="SVD-eR-kJW" secondAttribute="bottom" id="c44-Ub-Tux"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="textViewForMessagingText" destination="vun-qf-Ny5" id="rB0-Ms-8LF"/>
+                        <outlet property="viewAtBackOfMessagingText" destination="SVD-eR-kJW" id="81g-F7-kCe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1ew-KC-e5a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1697" y="321"/>
+        </scene>
+    </scenes>
+</document>
