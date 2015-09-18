@@ -46,7 +46,7 @@ class SpringAnimationViewController: UIViewController {
         
         // 🚀 Following line goes with UILabel
         //springView = MKFluidView(frame: CGRectMake(150-12, viewAtBackOfMessagingText.frame.origin.y - 20, 150+24, 20))
-        springView = MKFluidView(frame: CGRectMake(0, viewAtBackOfMessagingText.frame.origin.y - 200, 320, 200))
+        springView = MKFluidView(frame: CGRectMake(0, viewAtBackOfMessagingText.frame.origin.y - 80, 320, 80))
 
         
         self.view.addSubview(springView!)
@@ -56,7 +56,7 @@ class SpringAnimationViewController: UIViewController {
         springView?.animationDuration = NSTimeInterval(slideTimeDuration.value)
         springView?.animationSpecs = Animation( sideDelay : 0.1, sideDumping : 0.4, sideVelocity : 0.9, centerDelay: NSTimeInterval( slideDelay.value), centerDumping: CGFloat(slideDamping.value), centerVelocity: CGFloat(slideVelocity.value) )
         
-        springView?.animate(true, callback: { () -> Void in
+        springView?.animateWithSurfaceTension(callback: { () -> Void in
             self.springView?.removeFromSuperview()
             self.springView = nil
         })

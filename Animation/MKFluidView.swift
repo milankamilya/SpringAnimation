@@ -34,8 +34,9 @@ enum CurveShape {
     case Arc
     case EggShape
     case RoundTrigonal
-    case SurfaceTensionOutward
-    case SurfaceTensionInward
+    case SurfaceTensionPhaseI
+    case SurfaceTensionPhaseII
+    case SurfaceTensionPhaseIII
 }
 
 enum AnimatedObject {
@@ -81,6 +82,7 @@ class MKFluidView: UIView {
     private var menuView: UIView?
     private var centerAnchorView: UIView?
     private var sideAnchorView: UIView?
+    private var sideAnchorViewHolder: CGPoint? // It is used for Surface Tension
     
     //MARK:- INITIALIZATION
     override init(frame: CGRect) {
@@ -186,6 +188,57 @@ class MKFluidView: UIView {
         
     }
     
+    func animateWithSurfaceTension(callback onComplition:((Void) -> Void )?) {
+        self.setupAnimationSpecification()
+        
+        if !isAnimating!  {
+                self.hidden = false
+            
+            isAnimating = true
+            displayLink = CADisplayLink(target: self, selector: Selector("updateDisplay:"))
+            displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            
+            curveType = CurveShape.SurfaceTensionPhaseI
+            
+            UIView.animateWithDuration( self.animationDuration! , delay: animationSpecs!.centerDelay, usingSpringWithDamping: animationSpecs!.centerDumping, initialSpringVelocity: animationSpecs!.centerVelocity, options: (.BeginFromCurrentState | .AllowUserInteraction) , animations: { () -> Void in
+                
+                self.getFrameForBothViews(true)
+                
+                }, completion: { (finished) -> Void in
+                    
+                    self.curveType = CurveShape.SurfaceTensionPhaseII
+                    self.sideAnchorViewHolder = self.sideAnchorView?.center
+                    
+                    
+                    UIView.animateWithDuration( NSTimeInterval(0.3) , delay: NSTimeInterval(0.0), options: (UIViewAnimationOptions.CurveEaseOut | UIViewAnimationOptions.AllowUserInteraction), animations: { () -> Void in
+                        
+                        self.sideAnchorView?.frame = CGRectMake(self.centerAnchorView!.center.x, self.sideAnchorView!.frame.origin.y, self.sideAnchorView!.frame.size.width, self.sideAnchorView!.frame.size.width)
+                        
+                    }, completion: { (finish) -> Void in
+                        
+                        self.curveType = CurveShape.SurfaceTensionPhaseIII
+                        
+                        UIView.animateWithDuration( NSTimeInterval(0.5) , delay: self.animationSpecs!.centerDelay, usingSpringWithDamping: CGFloat(0.3), initialSpringVelocity: self.animationSpecs!.centerVelocity, options: (.BeginFromCurrentState | .AllowUserInteraction) , animations: { () -> Void in
+                            
+                            self.getFrameForBothViews(false)
+                            
+                            }, completion: { (finished) -> Void in
+                                
+                                self.displayLink?.invalidate()
+                                self.displayLink = nil
+                                //self.isShown = isOpening
+                                self.isAnimating = false
+                                self.hidden = true
+                                
+                                if onComplition != nil {
+                                    onComplition?()
+                                }
+                        })
+                    })
+            })
+        }
+    }
+    
     //MARK:- UTILITY METHODS
     func setAnimationSpecification(type:AnimationType){
         switch type {
@@ -257,9 +310,8 @@ class MKFluidView: UIView {
                 case .TopInward :
                     centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height, MGSideHelperView, MGSideHelperView)
                 case .SurfaceTension :
-                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height * 0.20 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
                     sideAnchorView?.frame = CGRectMake(physicalObject!.x - physicalObject!.width/2.0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
-                    curveType = .SurfaceTensionOutward
                 default:
                     print("DirectionOfBouncing :: default")
             }
@@ -273,8 +325,7 @@ class MKFluidView: UIView {
                 case .SurfaceTension :
                     // TODO:- SurfaceTension Y of centerAnchorView might be changed.
                     centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
-                    sideAnchorView?.frame = CGRectMake(physicalObject!.x + physicalObject!.width/2.0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
-                    curveType = .SurfaceTensionInward
+                
                 default:
                     print("DirectionOfBouncing :: default")
             }
@@ -340,23 +391,50 @@ class MKFluidView: UIView {
                         print("")
                     case .RoundTrigonal :
                         print("")
-                    case .SurfaceTensionInward :
-                        // TODO:- Surface Tension Outward curve section
-                        var midOfCenterPoint = CGPoint(x: centerLayerCenterPoint.x, y: CGFloat(centerLayerCenterPoint.y * 2))
-                        var controlPoint1: CGPoint = CGPoint(x: sideLayerCenterPoint.x - 100, y: distYBetnPoints/2.0)
-                        var controlPoint2: CGPoint = CGPoint(x: centerLayerCenterPoint.x, y: CGFloat(centerLayerCenterPoint.y * 1.75))
-                        var controlPoint3: CGPoint = CGPoint(x: sideLayerCenterPoint.x + 2.0 * distXBetnPoints + 100, y: distYBetnPoints/2.0)
+                    case .SurfaceTensionPhaseI :
                         
-                        println("SurfaceTensionInward :: \(controlPoint1), \(controlPoint2), \(controlPoint3)")
+                        
+                        var controlPointForCenter1: CGPoint = CGPointMake( sideLayerCenterPoint.x + distXBetnPoints * 0.60, centerLayerCenterPoint.y )
+                        var controlPointForCenter2: CGPoint = CGPointMake(centerLayerCenterPoint.x + distXBetnPoints * 0.40, centerLayerCenterPoint.y)
+                        var controlPointForLeftSide: CGPoint = CGPointMake(sideLayerCenterPoint.x + distXBetnPoints * 0.3, sideLayerCenterPoint.y)
+                        var controlPointForRightSide: CGPoint = CGPointMake(destinationPoint.x - distXBetnPoints * 0.3, sideLayerCenterPoint.y)
+                        
+                        
                         
                         path.moveToPoint(sideLayerCenterPoint)
-                        path.addCurveToPoint(midOfCenterPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
-                        path.addCurveToPoint(destinationPoint, controlPoint1: controlPoint2, controlPoint2: controlPoint3)
+                        path.addCurveToPoint(centerLayerCenterPoint, controlPoint1: controlPointForLeftSide, controlPoint2: controlPointForCenter1)
+                        path.addCurveToPoint(destinationPoint, controlPoint1: controlPointForCenter2, controlPoint2: controlPointForRightSide)
                         path.closePath()
                     
-                    case .SurfaceTensionOutward :
-                        path.moveToPoint(sideLayerCenterPoint)
-                        path.addQuadCurveToPoint(destinationPoint, controlPoint: centerLayerCenterPoint)
+                    case .SurfaceTensionPhaseII :
+                        
+                        distXBetnPoints = centerLayerCenterPoint.x - sideAnchorViewHolder!.x
+                        destinationPoint = CGPointMake(centerLayerCenterPoint.x + distXBetnPoints, sideAnchorViewHolder!.y)
+                        var distXBetnCenterAndMovingSidePoints: CGFloat = centerLayerCenterPoint.x - sideLayerCenterPoint.x
+                        var controlPointForCenter1: CGPoint = CGPointMake( sideAnchorViewHolder!.x + distXBetnPoints * 0.70, centerLayerCenterPoint.y )
+                        var controlPointForCenter2: CGPoint = CGPointMake(centerLayerCenterPoint.x + distXBetnPoints * 0.30, centerLayerCenterPoint.y)
+                        
+                        var controlPointForLeftSide: CGPoint = CGPointMake( sideLayerCenterPoint.x + distXBetnCenterAndMovingSidePoints * 0.3 , sideLayerCenterPoint.y)
+                        var controlPointForRightSide: CGPoint = CGPointMake( centerLayerCenterPoint.x + distXBetnCenterAndMovingSidePoints * 0.7, sideLayerCenterPoint.y)
+                        
+                        
+                    
+                        path.moveToPoint(sideAnchorViewHolder!)
+                        path.addCurveToPoint(centerLayerCenterPoint, controlPoint1: sideLayerCenterPoint, controlPoint2: controlPointForCenter1)
+                        path.addCurveToPoint(destinationPoint, controlPoint1: controlPointForCenter2, controlPoint2: controlPointForRightSide)
+                        path.closePath()
+                    
+                    
+                    case .SurfaceTensionPhaseIII :
+                        
+                        distXBetnPoints = centerLayerCenterPoint.x - sideAnchorViewHolder!.x
+                        destinationPoint = CGPointMake(centerLayerCenterPoint.x + distXBetnPoints, sideAnchorViewHolder!.y)
+                        var controlPointForCenter1: CGPoint = CGPointMake( sideAnchorViewHolder!.x + distXBetnPoints * 0.70, centerLayerCenterPoint.y )
+                        var controlPointForCenter2: CGPoint = CGPointMake(centerLayerCenterPoint.x + distXBetnPoints * 0.30, centerLayerCenterPoint.y)
+                        
+                        path.moveToPoint(sideAnchorViewHolder!)
+                        path.addCurveToPoint(centerLayerCenterPoint, controlPoint1: sideLayerCenterPoint, controlPoint2: controlPointForCenter1)
+                        path.addCurveToPoint(destinationPoint, controlPoint1: controlPointForCenter2, controlPoint2: sideLayerCenterPoint)
                         path.closePath()
                     
                     default:
