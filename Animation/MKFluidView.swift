@@ -17,6 +17,14 @@ struct Animation {
     var centerVelocity: CGFloat
 }
 
+struct PhysicalObject {
+    var x: CGFloat
+    var y: CGFloat
+    var width: CGFloat
+    var height: CGFloat
+    var roundRect: CGFloat
+}
+
 enum AnimationType {
     case Normal
     case Wave
@@ -26,6 +34,8 @@ enum CurveShape {
     case Arc
     case EggShape
     case RoundTrigonal
+    case SurfaceTensionOutward
+    case SurfaceTensionInward
 }
 
 enum AnimatedObject {
@@ -43,6 +53,7 @@ enum DirectionOfBouncing {
     case TopOutward
     case BottomInward
     case BottomOutward
+    case SurfaceTension
 }
 
 class MKFluidView: UIView {
@@ -57,6 +68,9 @@ class MKFluidView: UIView {
     var animatedObject: AnimatedObject? = .Both
     var fillColor: UIColor? = UIColor(red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 1.0)
     var animationDuration: NSTimeInterval? = 0.5
+    
+    /// Set this property if you want to have object & Surface tension animation
+    var physicalObject: PhysicalObject? = PhysicalObject(x: 100, y: 0, width: 100, height: 50, roundRect: 0)
     
     
     //MARK:- PRIVATE PROPERTIES
@@ -141,7 +155,7 @@ class MKFluidView: UIView {
             displayLink = CADisplayLink(target: self, selector: Selector("updateDisplay:"))
             displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
             
-            UIView.animateWithDuration(animationDuration! , delay: animationSpecs!.centerDelay, usingSpringWithDamping: animationSpecs!.centerDumping, initialSpringVelocity: animationSpecs!.centerVelocity, options: (.BeginFromCurrentState | .AllowUserInteraction) , animations: { () -> Void in
+            UIView.animateWithDuration( self.animationDuration! , delay: animationSpecs!.centerDelay, usingSpringWithDamping: animationSpecs!.centerDumping, initialSpringVelocity: animationSpecs!.centerVelocity, options: (.BeginFromCurrentState | .AllowUserInteraction) , animations: { () -> Void in
                 
                 self.getFrameForBothViews(isOpening)
                 
@@ -211,15 +225,23 @@ class MKFluidView: UIView {
         switch directionOfBouncing! {
             case .BottomInward :
                 centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
-                //centerAnchorView?.backgroundColor = UIColor.greenColor()
                 sideAnchorView = UIView(frame: CGRectMake(0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
-                //sideAnchorView?.backgroundColor = UIColor.greenColor()
             case .TopInward :
                 centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
                 sideAnchorView = UIView(frame: CGRectMake(0 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
+            
+            case .SurfaceTension :
+                centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
+                sideAnchorView = UIView(frame: CGRectMake(physicalObject!.x  - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
+                
+                // TODO:- SurfaceTension A few variable might be set here
+            
             default:
                 print("DirectionOfBouncing :: default")
         }
+        centerAnchorView?.backgroundColor = UIColor.greenColor()
+        sideAnchorView?.backgroundColor = UIColor.greenColor()
+
         //TODO:- Other Direction Of Bouncing yet to implement
     }
     
@@ -234,6 +256,10 @@ class MKFluidView: UIView {
                     centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, 0, MGSideHelperView, MGSideHelperView)
                 case .TopInward :
                     centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height, MGSideHelperView, MGSideHelperView)
+                case .SurfaceTension :
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
+                    sideAnchorView?.frame = CGRectMake(physicalObject!.x - physicalObject!.width/2.0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
+                    curveType = .SurfaceTensionOutward
                 default:
                     print("DirectionOfBouncing :: default")
             }
@@ -244,6 +270,11 @@ class MKFluidView: UIView {
                     centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height, MGSideHelperView, MGSideHelperView)
                 case .TopInward :
                     centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, 0, MGSideHelperView, MGSideHelperView)
+                case .SurfaceTension :
+                    // TODO:- SurfaceTension Y of centerAnchorView might be changed.
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
+                    sideAnchorView?.frame = CGRectMake(physicalObject!.x + physicalObject!.width/2.0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
+                    curveType = .SurfaceTensionInward
                 default:
                     print("DirectionOfBouncing :: default")
             }
@@ -267,6 +298,9 @@ class MKFluidView: UIView {
             sideLayerCenterPoint = CGPointMake(sideLayer!.frame.origin.x + sideLayer!.frame.size.width/2.0, sideLayer!.frame.origin.y + CGFloat(sideLayer!.frame.size.height/2.0))
             centerLayerCenterPoint = CGPointMake(centerLayer!.frame.origin.x + centerLayer!.frame.size.width/2.0, centerLayer!.frame.origin.y + CGFloat(centerLayer!.frame.size.height/2.0))
         }
+        var distXBetnPoints: CGFloat = centerLayerCenterPoint.x - sideLayerCenterPoint.x
+        var distYBetnPoints: CGFloat = centerLayerCenterPoint.y - sideLayerCenterPoint.y
+        var destinationPoint: CGPoint = CGPointMake(sideLayerCenterPoint.x + 2.0 * distXBetnPoints , sideLayerCenterPoint.y)
         
         
         switch direction {
@@ -280,12 +314,12 @@ class MKFluidView: UIView {
                     case .EggShape :
                         var a: CGPoint = CGPointMake(centerLayerCenterPoint.x/4.0, centerLayerCenterPoint.y)
                         var b: CGPoint = CGPointMake(centerLayerCenterPoint.x*1.75, centerLayerCenterPoint.y)
-                        var desPoint: CGPoint = CGPointMake(sideLayerCenterPoint.x + self.frame.size.width , sideLayerCenterPoint.y)
+                        
                         path.moveToPoint(sideLayerCenterPoint)
-                        path.addCurveToPoint(desPoint, controlPoint1: a, controlPoint2: b)
+                        path.addCurveToPoint(destinationPoint, controlPoint1: a, controlPoint2: b)
                         path.closePath()
 
-                    case .RoundTrigonal:
+                    default:
                         print("")
                 }
             case .TopInward :
@@ -294,8 +328,39 @@ class MKFluidView: UIView {
                     print("")
                 case .EggShape :
                     print("")
-                case .RoundTrigonal:
+                default:
                     print("")
+                }
+            
+            case .SurfaceTension :
+                switch curveShape {
+                    case .Arc :
+                        print("")
+                    case .EggShape :
+                        print("")
+                    case .RoundTrigonal :
+                        print("")
+                    case .SurfaceTensionInward :
+                        // TODO:- Surface Tension Outward curve section
+                        var midOfCenterPoint = CGPoint(x: centerLayerCenterPoint.x, y: CGFloat(centerLayerCenterPoint.y * 2))
+                        var controlPoint1: CGPoint = CGPoint(x: sideLayerCenterPoint.x - 100, y: distYBetnPoints/2.0)
+                        var controlPoint2: CGPoint = CGPoint(x: centerLayerCenterPoint.x, y: CGFloat(centerLayerCenterPoint.y * 1.75))
+                        var controlPoint3: CGPoint = CGPoint(x: sideLayerCenterPoint.x + 2.0 * distXBetnPoints + 100, y: distYBetnPoints/2.0)
+                        
+                        println("SurfaceTensionInward :: \(controlPoint1), \(controlPoint2), \(controlPoint3)")
+                        
+                        path.moveToPoint(sideLayerCenterPoint)
+                        path.addCurveToPoint(midOfCenterPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+                        path.addCurveToPoint(destinationPoint, controlPoint1: controlPoint2, controlPoint2: controlPoint3)
+                        path.closePath()
+                    
+                    case .SurfaceTensionOutward :
+                        path.moveToPoint(sideLayerCenterPoint)
+                        path.addQuadCurveToPoint(destinationPoint, controlPoint: centerLayerCenterPoint)
+                        path.closePath()
+                    
+                    default:
+                        print("")
                 }
             default :
                 print("")
