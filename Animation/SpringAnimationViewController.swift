@@ -39,14 +39,14 @@ class SpringAnimationViewController: UIViewController {
     @IBAction func springAnimationFetched(sender: UIButton) {
         
         
-        println("\(slideTimeDuration.value)  \(slideDelay.value)  \(slideDamping.value)  \(slideVelocity.value)")
+        //println("\(slideTimeDuration.value)  \(slideDelay.value)  \(slideDamping.value)  \(slideVelocity.value)")
         
         var menuView = UIView(frame: CGRectMake(0, 100, 320, 60))
         menuView.backgroundColor = themeColor
         
         // 🚀 Following line goes with UILabel
         //springView = MKFluidView(frame: CGRectMake(150-12, viewAtBackOfMessagingText.frame.origin.y - 20, 150+24, 20))
-        springView = MKFluidView(frame: CGRectMake(0, viewAtBackOfMessagingText.frame.origin.y - 80, 320, 80))
+        springView = MKFluidView(frame: CGRectMake(0, viewAtBackOfMessagingText.frame.origin.y - 50, 320, 50))
 
         
         self.view.addSubview(springView!)
@@ -64,8 +64,9 @@ class SpringAnimationViewController: UIViewController {
         // UILabel Animation
         
         // TODO:- Open Label Animation
+        
         /*
-        var labelMessage: UILabel = UILabel(frame: CGRectMake(150, viewAtBackOfMessagingText.frame.origin.y, 150, 50))
+        var labelMessage: UILabel = UILabel(frame: CGRectMake(100, viewAtBackOfMessagingText.frame.origin.y , 120, 50))
         labelMessage.text = "Hello World"
         labelMessage.textAlignment = .Center
         labelMessage.backgroundColor = themeColor
@@ -74,14 +75,21 @@ class SpringAnimationViewController: UIViewController {
         self.view.addSubview(labelMessage)
         
         
-        UIView.animateWithDuration( NSTimeInterval(slideTimeDuration.value), delay: NSTimeInterval(slideDelay.value), usingSpringWithDamping: CGFloat(slideDamping.value), initialSpringVelocity: CGFloat(slideVelocity.value), options: (UIViewAnimationOptions.BeginFromCurrentState | UIViewAnimationOptions.AllowUserInteraction), animations: { () -> Void in
+        UIView.animateWithDuration( NSTimeInterval(slideTimeDuration.value + 0.45), delay: NSTimeInterval(slideDelay.value), usingSpringWithDamping: CGFloat(slideDamping.value), initialSpringVelocity: CGFloat(slideVelocity.value), options: (UIViewAnimationOptions.BeginFromCurrentState | UIViewAnimationOptions.AllowUserInteraction), animations: { () -> Void in
             
-            labelMessage.frame = CGRectMake(150, self.viewAtBackOfMessagingText.frame.origin.y - 70, 150, 50)
+            labelMessage.frame = CGRectMake(100, self.viewAtBackOfMessagingText.frame.origin.y - 60, 120, 50)
             
         }, completion:{ (finish) -> Void in
-            labelMessage.removeFromSuperview()
+            
+            UIView.animateWithDuration(NSTimeInterval(0.5), delay: NSTimeInterval(0.0), usingSpringWithDamping: CGFloat(0.6), initialSpringVelocity: CGFloat(0.5), options: (UIViewAnimationOptions.BeginFromCurrentState), animations: { () -> Void in
+                
+                labelMessage.frame = CGRectMake(180, self.viewAtBackOfMessagingText.frame.origin.y - 200, 120, 50)
+
+            }, completion: { (finish) -> Void in
+                labelMessage.removeFromSuperview()
+            })
         })
-        */
+    */
         
     }
     
@@ -102,6 +110,4 @@ class SpringAnimationViewController: UIViewController {
         self.view.layer.addSublayer(shapeLayer)
         
     }
-
-
 }

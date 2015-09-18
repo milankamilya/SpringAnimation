@@ -192,7 +192,8 @@ class MKFluidView: UIView {
         self.setupAnimationSpecification()
         
         if !isAnimating!  {
-                self.hidden = false
+            
+            self.hidden = false
             
             isAnimating = true
             displayLink = CADisplayLink(target: self, selector: Selector("updateDisplay:"))
@@ -279,6 +280,7 @@ class MKFluidView: UIView {
             case .BottomInward :
                 centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
                 sideAnchorView = UIView(frame: CGRectMake(0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
+            
             case .TopInward :
                 centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
                 sideAnchorView = UIView(frame: CGRectMake(0 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
@@ -400,7 +402,6 @@ class MKFluidView: UIView {
                         var controlPointForRightSide: CGPoint = CGPointMake(destinationPoint.x - distXBetnPoints * 0.3, sideLayerCenterPoint.y)
                         
                         
-                        
                         path.moveToPoint(sideLayerCenterPoint)
                         path.addCurveToPoint(centerLayerCenterPoint, controlPoint1: controlPointForLeftSide, controlPoint2: controlPointForCenter1)
                         path.addCurveToPoint(destinationPoint, controlPoint1: controlPointForCenter2, controlPoint2: controlPointForRightSide)
@@ -416,7 +417,6 @@ class MKFluidView: UIView {
                         
                         var controlPointForLeftSide: CGPoint = CGPointMake( sideLayerCenterPoint.x + distXBetnCenterAndMovingSidePoints * 0.3 , sideLayerCenterPoint.y)
                         var controlPointForRightSide: CGPoint = CGPointMake( centerLayerCenterPoint.x + distXBetnCenterAndMovingSidePoints * 0.7, sideLayerCenterPoint.y)
-                        
                         
                     
                         path.moveToPoint(sideAnchorViewHolder!)
