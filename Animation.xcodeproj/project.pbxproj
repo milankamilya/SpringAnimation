@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8C6E3F2E1BA80B0500A69D85 /* SpringAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E3F2D1BA80B0500A69D85 /* SpringAnimationViewController.swift */; };
 		8C6E3F301BA8415900A69D85 /* MKFluidView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E3F2F1BA8415900A69D85 /* MKFluidView.swift */; };
+		8CB0EE691BB0044500BF2C4C /* FluidVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0EE681BB0044500BF2C4C /* FluidVC.swift */; };
 		8CEC49C51BA6A742002C26EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC49C41BA6A742002C26EE /* AppDelegate.swift */; };
 		8CEC49C71BA6A742002C26EE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEC49C61BA6A742002C26EE /* ViewController.swift */; };
 		8CEC49CA1BA6A742002C26EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CEC49C81BA6A742002C26EE /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		8C6E3F2D1BA80B0500A69D85 /* SpringAnimationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringAnimationViewController.swift; sourceTree = "<group>"; };
 		8C6E3F2F1BA8415900A69D85 /* MKFluidView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKFluidView.swift; sourceTree = "<group>"; };
+		8CB0EE681BB0044500BF2C4C /* FluidVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FluidVC.swift; sourceTree = "<group>"; };
 		8CEC49BF1BA6A742002C26EE /* Animation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Animation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CEC49C31BA6A742002C26EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CEC49C41BA6A742002C26EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,15 +85,16 @@
 		8CEC49C11BA6A742002C26EE /* Animation */ = {
 			isa = PBXGroup;
 			children = (
+				8CEC49E41BA6E4B1002C26EE /* LineAnimationViewController.swift */,
+				8C6E3F2D1BA80B0500A69D85 /* SpringAnimationViewController.swift */,
+				8C6E3F2F1BA8415900A69D85 /* MKFluidView.swift */,
 				8CEC49C41BA6A742002C26EE /* AppDelegate.swift */,
 				8CEC49C61BA6A742002C26EE /* ViewController.swift */,
+				8CB0EE681BB0044500BF2C4C /* FluidVC.swift */,
 				8CEC49C81BA6A742002C26EE /* Main.storyboard */,
 				8CEC49CB1BA6A742002C26EE /* Images.xcassets */,
 				8CEC49CD1BA6A742002C26EE /* LaunchScreen.xib */,
 				8CEC49C21BA6A742002C26EE /* Supporting Files */,
-				8CEC49E41BA6E4B1002C26EE /* LineAnimationViewController.swift */,
-				8C6E3F2D1BA80B0500A69D85 /* SpringAnimationViewController.swift */,
-				8C6E3F2F1BA8415900A69D85 /* MKFluidView.swift */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				8CEC49C71BA6A742002C26EE /* ViewController.swift in Sources */,
 				8CEC49E51BA6E4B1002C26EE /* LineAnimationViewController.swift in Sources */,
 				8CEC49C51BA6A742002C26EE /* AppDelegate.swift in Sources */,
+				8CB0EE691BB0044500BF2C4C /* FluidVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -99,6 +99,7 @@ class MKFluidView: UIView {
          **************************************************/
         
         self.backgroundColor = UIColor.clearColor()
+        setupAnimationSpecification()
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -129,7 +130,7 @@ class MKFluidView: UIView {
     //MARK:- DRAWING
     override func drawRect(rect: CGRect) {
         
-        if sideAnchorView?.superview == nil {
+        if centerAnchorView?.superview == nil {
             //self.addSubview(menuView!)
             self.addSubview(sideAnchorView!)
             self.addSubview(centerAnchorView!)
@@ -264,6 +265,82 @@ class MKFluidView: UIView {
         
         if !isAnimating! {
             
+            self.hidden = false
+            
+            isAnimating = true
+            displayLink = CADisplayLink(target: self, selector: Selector("updateDisplay:"))
+            displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            
+            // 1. set View to sideView, centerView
+            var heightOfCenterPoint: CGFloat = self.frame.size.height - centerPoint.y
+            var distXBetnPoints: CGFloat = heightOfCenterPoint * 0.25
+            var xOfSideAnchorView = centerPoint.x - distXBetnPoints
+            
+            self.centerAnchorView = UIView(frame: CGRectMake( centerPoint.x - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
+            self.sideAnchorView = UIView(frame: CGRectMake(xOfSideAnchorView - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
+            
+            self.centerAnchorView?.backgroundColor = UIColor.greenColor()
+            self.sideAnchorView?.backgroundColor = UIColor.greenColor()
+            
+            
+            self.curveType = CurveShape.SurfaceTensionPhaseI
+            
+            
+            UIView.animateWithDuration(NSTimeInterval(0.1), delay: NSTimeInterval(0.0), options: UIViewAnimationOptions.BeginFromCurrentState  , animations: { () -> Void in
+                
+                self.centerAnchorView?.frame = CGRectMake( centerPoint.x - (MKAnchorViewDimension/2.0), centerPoint.y - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension)
+                
+            }, completion: { (finished) -> Void in
+                self.displayLink?.invalidate()
+                self.displayLink = nil
+                self.hidden = false
+                
+                self.isAnimating = false
+            })
+        }
+    }
+    
+    func movingTouchRecognizer(centerPoint: CGPoint) {
+        
+        if !isAnimating! {
+            
+            self.hidden = false
+            
+            isAnimating = true
+            displayLink = CADisplayLink(target: self, selector: Selector("updateDisplay:"))
+            displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            
+            // 1. set View to sideView, centerView
+            var heightOfCenterPoint: CGFloat = self.frame.size.height - centerPoint.y
+            var distXBetnPoints: CGFloat = (heightOfCenterPoint * 1.5)/2.0
+            var xOfSideAnchorView = centerPoint.x - distXBetnPoints
+           
+            self.curveType = CurveShape.SurfaceTensionPhaseI
+            
+            UIView.animateWithDuration(NSTimeInterval(0.1), delay: NSTimeInterval(0.0), options: UIViewAnimationOptions.BeginFromCurrentState  , animations: { () -> Void in
+                
+                self.centerAnchorView?.frame = CGRectMake( centerPoint.x - (self.MKAnchorViewDimension/2.0), centerPoint.y - (self.MKAnchorViewDimension/2.0), self.MKAnchorViewDimension, self.MKAnchorViewDimension)
+                self.sideAnchorView?.frame = CGRectMake(xOfSideAnchorView - (self.MKAnchorViewDimension/2.0), self.frame.size.height - (self.MKAnchorViewDimension/2.0), self.MKAnchorViewDimension, self.MKAnchorViewDimension)
+                
+                }, completion: { (finished) -> Void in
+                    self.displayLink?.invalidate()
+                    self.displayLink = nil
+                    self.hidden = false
+                    
+                    self.isAnimating = false
+            })
+            
+            
+            
+        }
+    }
+    
+    func endTouchRecognizer(centerPoint: CGPoint) {
+        
+       // if !isAnimating! {
+            
+            self.hidden = false
+            
             isAnimating = true
             displayLink = CADisplayLink(target: self, selector: Selector("updateDisplay:"))
             displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
@@ -273,28 +350,45 @@ class MKFluidView: UIView {
             var distXBetnPoints: CGFloat = (heightOfCenterPoint * 1.5)/2.0
             var xOfSideAnchorView = centerPoint.x - distXBetnPoints
             
-            self.centerAnchorView = UIView(frame: CGRectMake( centerPoint.x - (MKAnchorViewDimension/2.0), 0.0 - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
-            self.sideAnchorView = UIView(frame: CGRectMake(xOfSideAnchorView - (MKAnchorViewDimension/2.0), 0 - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
-            
-            self.centerAnchorView?.backgroundColor = UIColor.greenColor()
-            self.sideAnchorView?.backgroundColor = UIColor.greenColor()
-            
-            
             self.curveType = CurveShape.SurfaceTensionPhaseI
+            self.curveType = CurveShape.SurfaceTensionPhaseII
+            self.sideAnchorViewHolder = self.sideAnchorView?.center
             
-            UIView.animateWithDuration(NSTimeInterval(2.0), delay: NSTimeInterval(0.0), options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
+            
+            UIView.animateWithDuration( NSTimeInterval(0.3) , delay: NSTimeInterval(0.0), options: (UIViewAnimationOptions.CurveEaseOut | UIViewAnimationOptions.AllowUserInteraction), animations: { () -> Void in
                 
-                self.centerAnchorView?.frame = CGRectMake( centerPoint.x - (MKAnchorViewDimension/2.0), centerPoint.y - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension)
+                self.sideAnchorView?.frame = CGRectMake(self.centerAnchorView!.center.x, self.sideAnchorView!.frame.origin.y, self.sideAnchorView!.frame.size.width, self.sideAnchorView!.frame.size.width)
                 
-            }, completion: { (finished) -> Void in
-                self.displayLink?.invalidate()
-                self.displayLink = nil
+                }, completion: { (finish) -> Void in
+                    
+                    self.curveType = CurveShape.SurfaceTensionPhaseIII
+                    
+                    distXBetnPoints = self.centerAnchorView!.frame.origin.x - self.sideAnchorView!.frame.origin.x
+                    
+                    UIView.animateWithDuration( NSTimeInterval(0.5) , delay: self.animationSpecs!.centerDelay, usingSpringWithDamping: CGFloat(0.3), initialSpringVelocity: self.animationSpecs!.centerVelocity, options: (.BeginFromCurrentState | .AllowUserInteraction) , animations: { () -> Void in
+                        
+                        self.centerAnchorView?.frame = CGRectMake(self.centerAnchorView!.frame.origin.x - (self.MKAnchorViewDimension/2.0), self.frame.size.height - (self.MKAnchorViewDimension/2.0), self.MKAnchorViewDimension, self.MKAnchorViewDimension)
+                        self.sideAnchorView?.frame = CGRectMake(self.sideAnchorView!.frame.origin.x - (self.MKAnchorViewDimension/2.0), self.frame.size.height - (self.MKAnchorViewDimension/2.0), self.MKAnchorViewDimension, self.MKAnchorViewDimension)
+                        
+                        }, completion: { (finished) -> Void in
+                            
+                            self.displayLink?.invalidate()
+                            self.displayLink = nil
+                            self.isAnimating = false
+                            self.hidden = true
+                            
+                            self.isAnimating = false
+                            
+//                            if onComplition != nil {
+//                                onComplition?()
+//                            }
+                    })
             })
             
             
-            
-        }
+        //}
     }
+    
     
     //MARK:- UTILITY METHODS
     func setAnimationSpecification(type:AnimationType){

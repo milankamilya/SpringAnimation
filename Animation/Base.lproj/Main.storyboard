@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6AQ-GB-oiJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZEv-VR-iO2">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -69,6 +69,41 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--FluidVC-->
+        <scene sceneID="ztl-Te-02t">
+            <objects>
+                <viewController id="ZEv-VR-iO2" customClass="FluidVC" customModule="Animation" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bhB-Lg-SoV"/>
+                        <viewControllerLayoutGuide type="bottom" id="IFJ-5y-dwO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2gt-jr-I6r">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hse-nK-I5a">
+                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
+                                <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="M01-Hi-mHI"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="hse-nK-I5a" secondAttribute="trailing" id="Ayo-tf-uX0"/>
+                            <constraint firstItem="IFJ-5y-dwO" firstAttribute="top" secondItem="hse-nK-I5a" secondAttribute="bottom" id="VZ1-yr-ksb"/>
+                            <constraint firstItem="hse-nK-I5a" firstAttribute="leading" secondItem="2gt-jr-I6r" secondAttribute="leading" id="sG6-ls-2ix"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="viewBottom" destination="hse-nK-I5a" id="qLb-pR-RrJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OE4-Kj-goP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1063" y="973"/>
         </scene>
         <!--Line Animation View Controller-->
         <scene sceneID="i3r-6l-AUm">
