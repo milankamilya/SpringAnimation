@@ -279,9 +279,9 @@ class MKFluidView: UIView {
             self.centerAnchorView = UIView(frame: CGRectMake( centerPoint.x - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
             self.sideAnchorView = UIView(frame: CGRectMake(xOfSideAnchorView - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
             
-            self.centerAnchorView?.backgroundColor = UIColor.greenColor()
-            self.sideAnchorView?.backgroundColor = UIColor.greenColor()
-            
+//            self.centerAnchorView?.backgroundColor = UIColor.greenColor()
+//            self.sideAnchorView?.backgroundColor = UIColor.greenColor()
+//            
             
             self.curveType = CurveShape.SurfaceTensionPhaseI
             
@@ -444,8 +444,8 @@ class MKFluidView: UIView {
             default:
                 print("DirectionOfBouncing :: default")
         }
-        centerAnchorView?.backgroundColor = UIColor.greenColor()
-        sideAnchorView?.backgroundColor = UIColor.greenColor()
+        //centerAnchorView?.backgroundColor = UIColor.greenColor()
+        //sideAnchorView?.backgroundColor = UIColor.greenColor()
 
         //TODO:- Other Direction Of Bouncing yet to implement
     }
