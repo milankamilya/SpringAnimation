@@ -38,7 +38,6 @@ class SpringAnimationViewController: UIViewController {
     //MARK:- USER INTERACTION
     @IBAction func springAnimationFetched(sender: UIButton) {
         
-        
         //println("\(slideTimeDuration.value)  \(slideDelay.value)  \(slideDamping.value)  \(slideVelocity.value)")
         
         var menuView = UIView(frame: CGRectMake(0, 100, 320, 60))
@@ -89,7 +88,7 @@ class SpringAnimationViewController: UIViewController {
                 labelMessage.removeFromSuperview()
             })
         })
-    */
+        */
         
     }
     
@@ -110,4 +109,55 @@ class SpringAnimationViewController: UIViewController {
         self.view.layer.addSublayer(shapeLayer)
         
     }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if touches.count == 1 {
+            for touch in touches {
+                let touchLocal: UITouch = touch as! UITouch
+                
+                var point: CGPoint = touchLocal.locationInView(touchLocal.view)
+                point = touchLocal.view.convertPoint(point, toView: nil)
+                
+//                var layer: CALayer = self.view.layer.presentationLayer().hitTest(point)
+//                layer = layer.modelLayer() as! CALayer
+//                layer.backgroundColor = UIColor.redColor().CGColor
+//                
+                
+                springView = MKFluidView(frame: CGRectMake(0, 0, 320, self.view.frame.size.height - viewAtBackOfMessagingText.frame.size.height))
+                springView?.backgroundColor = UIColor.orangeColor()
+                self.view.addSubview(springView!)
+                springView?.fillColor = themeColor
+                springView?.directionOfBouncing = .SurfaceTension
+                springView?.animationDuration = NSTimeInterval(slideTimeDuration.value)
+                springView?.animationSpecs = Animation( sideDelay : 0.1, sideDumping : 0.4, sideVelocity : 0.9, centerDelay: NSTimeInterval( slideDelay.value), centerDumping: CGFloat(slideDamping.value), centerVelocity: CGFloat(slideVelocity.value) )
+                springView?.initializeTouchRecognizer(point)
+
+            }
+        }
+    }
+    
+    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
+    }
+    
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
+    }
+    
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+        if touches.count == 1 {
+            for touch in touches {
+                let touchLocal: UITouch = touch as! UITouch
+                
+                var point: CGPoint = touchLocal.locationInView(touchLocal.view)
+                point = touchLocal.view.convertPoint(point, toView: nil)
+                
+                var layer: CALayer = self.view.layer.presentationLayer().hitTest(point)
+                layer = layer.modelLayer() as! CALayer
+                layer.backgroundColor = UIColor.redColor().CGColor
+            }
+        }
+    }
+    
+
 }

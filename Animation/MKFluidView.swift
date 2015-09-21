@@ -60,7 +60,7 @@ enum DirectionOfBouncing {
 class MKFluidView: UIView {
     
     //MARK:- CONSTANTS
-    let MGSideHelperView: CGFloat = 2.0
+    let MKAnchorViewDimension: CGFloat = 2.0
     
     //MARK:- PUBLIC PROPERTIES
     var directionOfBouncing: DirectionOfBouncing? = .BottomInward
@@ -72,6 +72,9 @@ class MKFluidView: UIView {
     
     /// Set this property if you want to have object & Surface tension animation
     var physicalObject: PhysicalObject? = PhysicalObject(x: 100, y: 0, width: 100, height: 50, roundRect: 0)
+    
+    /// To get wave view with Human Touch
+    var humanTouchEnable: Bool? = false
     
     
     //MARK:- PRIVATE PROPERTIES
@@ -116,9 +119,9 @@ class MKFluidView: UIView {
         self.backgroundColor = UIColor.orangeColor()
         
         
-        sideAnchorView = UIView(frame:CGRectMake(CGFloat(-MGSideHelperView/2.0), self.frame.height + CGFloat( -MGSideHelperView/2.0), CGFloat(MGSideHelperView), CGFloat(MGSideHelperView)))
+        sideAnchorView = UIView(frame:CGRectMake(CGFloat(-MKAnchorViewDimension/2.0), self.frame.height + CGFloat( -MKAnchorViewDimension/2.0), CGFloat(MKAnchorViewDimension), CGFloat(MKAnchorViewDimension)))
         sideAnchorView?.backgroundColor = UIColor.greenColor()
-        centerAnchorView = UIView(frame:CGRectMake(CGFloat(self.frame.size.width/2.0)-MGSideHelperView/2.0, self.frame.size.height + CGFloat(-MGSideHelperView/2.0), CGFloat(MGSideHelperView), CGFloat(MGSideHelperView)))
+        centerAnchorView = UIView(frame:CGRectMake(CGFloat(self.frame.size.width/2.0)-MKAnchorViewDimension/2.0, self.frame.size.height + CGFloat(-MKAnchorViewDimension/2.0), CGFloat(MKAnchorViewDimension), CGFloat(MKAnchorViewDimension)))
         centerAnchorView?.backgroundColor = UIColor.greenColor()
         
     }
@@ -146,6 +149,10 @@ class MKFluidView: UIView {
     
     // MARK:- ANIMATE
     func animate(isOpening: Bool, callback onComplition:((Void) -> Void )?) {
+        
+        if humanTouchEnable! {
+            return
+        }
         
         self.setupAnimationSpecification()
         
@@ -189,6 +196,11 @@ class MKFluidView: UIView {
     }
     
     func animateWithSurfaceTension(callback onComplition:((Void) -> Void )?) {
+        
+        if humanTouchEnable! {
+            return
+        }
+        
         self.setupAnimationSpecification()
         
         if !isAnimating!  {
@@ -240,6 +252,50 @@ class MKFluidView: UIView {
         }
     }
     
+    func initializeTouchRecognizer(centerPoint: CGPoint) {
+        // TASKS ::
+        // 1. set View to sideView, centerView
+        // 2. set timeInterval 0.1 to move to that location
+        // 3. Here Center Point will be set by user Touch point
+        // 4. SideViewPoint will be set accordingly
+        // 5. DisplayLink setting 
+        // 6.
+        
+        
+        if !isAnimating! {
+            
+            isAnimating = true
+            displayLink = CADisplayLink(target: self, selector: Selector("updateDisplay:"))
+            displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            
+            // 1. set View to sideView, centerView
+            var heightOfCenterPoint: CGFloat = self.frame.size.height - centerPoint.y
+            var distXBetnPoints: CGFloat = (heightOfCenterPoint * 1.5)/2.0
+            var xOfSideAnchorView = centerPoint.x - distXBetnPoints
+            
+            self.centerAnchorView = UIView(frame: CGRectMake( centerPoint.x - (MKAnchorViewDimension/2.0), 0.0 - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
+            self.sideAnchorView = UIView(frame: CGRectMake(xOfSideAnchorView - (MKAnchorViewDimension/2.0), 0 - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
+            
+            self.centerAnchorView?.backgroundColor = UIColor.greenColor()
+            self.sideAnchorView?.backgroundColor = UIColor.greenColor()
+            
+            
+            self.curveType = CurveShape.SurfaceTensionPhaseI
+            
+            UIView.animateWithDuration(NSTimeInterval(2.0), delay: NSTimeInterval(0.0), options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
+                
+                self.centerAnchorView?.frame = CGRectMake( centerPoint.x - (MKAnchorViewDimension/2.0), centerPoint.y - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension)
+                
+            }, completion: { (finished) -> Void in
+                self.displayLink?.invalidate()
+                self.displayLink = nil
+            })
+            
+            
+            
+        }
+    }
+    
     //MARK:- UTILITY METHODS
     func setAnimationSpecification(type:AnimationType){
         switch type {
@@ -278,16 +334,16 @@ class MKFluidView: UIView {
         
         switch directionOfBouncing! {
             case .BottomInward :
-                centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
-                sideAnchorView = UIView(frame: CGRectMake(0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
+                centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
+                sideAnchorView = UIView(frame: CGRectMake(0 - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
             
             case .TopInward :
-                centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
-                sideAnchorView = UIView(frame: CGRectMake(0 - (MGSideHelperView/2.0), 0 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
+                centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MKAnchorViewDimension/2.0), 0 - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
+                sideAnchorView = UIView(frame: CGRectMake(0 - (MKAnchorViewDimension/2.0), 0 - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
             
             case .SurfaceTension :
-                centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
-                sideAnchorView = UIView(frame: CGRectMake(physicalObject!.x  - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView))
+                centerAnchorView = UIView(frame: CGRectMake(self.frame.size.width/2 - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
+                sideAnchorView = UIView(frame: CGRectMake(physicalObject!.x  - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension))
                 
                 // TODO:- SurfaceTension A few variable might be set here
             
@@ -308,12 +364,12 @@ class MKFluidView: UIView {
         if isOpening {
             switch directionOfBouncing! {
                 case .BottomInward :
-                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, 0, MGSideHelperView, MGSideHelperView)
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, 0, MKAnchorViewDimension, MKAnchorViewDimension)
                 case .TopInward :
-                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height, MGSideHelperView, MGSideHelperView)
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height, MKAnchorViewDimension, MKAnchorViewDimension)
                 case .SurfaceTension :
-                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height * 0.20 - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
-                    sideAnchorView?.frame = CGRectMake(physicalObject!.x - physicalObject!.width/2.0 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MKAnchorViewDimension/2.0), self.frame.size.height * 0.20 - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension)
+                    sideAnchorView?.frame = CGRectMake(physicalObject!.x - physicalObject!.width/2.0 - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension)
                 default:
                     print("DirectionOfBouncing :: default")
             }
@@ -321,12 +377,12 @@ class MKFluidView: UIView {
         } else {
             switch directionOfBouncing! {
                 case .BottomInward :
-                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height, MGSideHelperView, MGSideHelperView)
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height, MKAnchorViewDimension, MKAnchorViewDimension)
                 case .TopInward :
-                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, 0, MGSideHelperView, MGSideHelperView)
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2, 0, MKAnchorViewDimension, MKAnchorViewDimension)
                 case .SurfaceTension :
                     // TODO:- SurfaceTension Y of centerAnchorView might be changed.
-                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MGSideHelperView/2.0), self.frame.size.height - (MGSideHelperView/2.0), MGSideHelperView, MGSideHelperView)
+                    centerAnchorView?.frame = CGRectMake(self.frame.size.width/2 - (MKAnchorViewDimension/2.0), self.frame.size.height - (MKAnchorViewDimension/2.0), MKAnchorViewDimension, MKAnchorViewDimension)
                 
                 default:
                     print("DirectionOfBouncing :: default")
@@ -449,7 +505,7 @@ class MKFluidView: UIView {
     
     func updateDisplay(displayLink:CADisplayLink) {
         self.setNeedsDisplay()
-        //println("updateDisplay")
+        println("updateDisplay")
     }
 }
 
