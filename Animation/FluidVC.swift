@@ -10,7 +10,8 @@ import UIKit
 
 class FluidVC: UIViewController {
 
-    @IBOutlet weak var viewBottom: UIView!
+    
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     //MARK:- CONTANTS
     let themeColor: UIColor = UIColor(red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 1.0)
@@ -22,10 +23,10 @@ class FluidVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        springView = MKFluidView(frame: CGRectMake(0, 0, 320, self.view.frame.size.height - viewBottom.frame.size.height))
+        springView = MKFluidView(frame: CGRectMake(0, 0, 320, self.view.frame.size.height ))
         //springView?.backgroundColor = UIColor.orangeColor()
         springView?.fillColor = themeColor
-        springView?.directionOfBouncing = .SurfaceTension
+        springView?.directionOfBouncing = .SurfaceTensionTopInward
         
         self.view.addSubview(springView!)
         
@@ -33,6 +34,22 @@ class FluidVC: UIViewController {
     }
 
 
+    @IBAction func segmentedControlViewChanged(sender: UISegmentedControl) {
+        
+        switch sender.selectedSegmentIndex {
+            case 0 :
+                springView?.directionOfBouncing = .SurfaceTensionTopInward
+            case 1 :
+                springView?.directionOfBouncing = .SurfaceTensionLeftInward
+            case 2 :
+                springView?.directionOfBouncing = .SurfaceTensionBottomInward
+            case 3 :
+                springView?.directionOfBouncing = .SurfaceTensionRightInward
+            default :
+                print("Check segmented Control Value")
+        }
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -43,10 +60,7 @@ class FluidVC: UIViewController {
                 
                 let touchLocal: UITouch = touch as! UITouch
                 var point: CGPoint = touchLocal.locationInView(touchLocal.view)
-                if CGRectContainsPoint(viewBottom.bounds, point)  {
-                    point = touchLocal.view.convertPoint(point, toView: nil)
-                    springView?.initializeTouchRecognizer(point)
-                }
+                springView?.initializeTouchRecognizer(point)
             }
         }
     }

@@ -82,23 +82,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hse-nK-I5a">
-                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
-                                <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="M01-Hi-mHI"/>
-                                </constraints>
-                            </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NTt-Aa-thH">
+                                <rect key="frame" x="208" y="237" width="271" height="29"/>
+                                <segments>
+                                    <segment title="Top"/>
+                                    <segment title="Left"/>
+                                    <segment title="Bottom"/>
+                                    <segment title="Right"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedControlViewChanged:" destination="ZEv-VR-iO2" eventType="valueChanged" id="YfR-a1-WBr"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="hse-nK-I5a" secondAttribute="trailing" id="Ayo-tf-uX0"/>
-                            <constraint firstItem="IFJ-5y-dwO" firstAttribute="top" secondItem="hse-nK-I5a" secondAttribute="bottom" id="VZ1-yr-ksb"/>
-                            <constraint firstItem="hse-nK-I5a" firstAttribute="leading" secondItem="2gt-jr-I6r" secondAttribute="leading" id="sG6-ls-2ix"/>
+                            <constraint firstAttribute="centerY" secondItem="NTt-Aa-thH" secondAttribute="centerY" id="sqR-qK-7y9"/>
+                            <constraint firstAttribute="centerX" secondItem="NTt-Aa-thH" secondAttribute="centerX" id="tLq-Ah-klS"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="viewBottom" destination="hse-nK-I5a" id="qLb-pR-RrJ"/>
+                        <outlet property="segmentedControl" destination="NTt-Aa-thH" id="oxy-TF-6Qe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OE4-Kj-goP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -197,7 +201,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time Duration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9F-Po-HqJ">
                                 <rect key="frame" x="36" y="42" width="528" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="DSV-SO-lZj">
@@ -207,7 +211,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delay" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YuT-nF-V9q">
                                 <rect key="frame" x="20" y="104" width="560" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.59999999999999998" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ga6-ZG-pb9">
@@ -217,7 +221,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Damping" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rkc-GR-681">
                                 <rect key="frame" x="20" y="171" width="560" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.59999999999999998" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="ij5-Sd-Hg9">
@@ -227,7 +231,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Velocity" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Elo-1D-PBB">
                                 <rect key="frame" x="20" y="238" width="560" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
